@@ -1,4 +1,4 @@
-/*global Firebase*/
+
 'use strict';
 
 /**
@@ -9,55 +9,30 @@
  * Controller of the firebaseApp
  */
 angular.module('firebaseApp')
-  .controller('MainCtrl', function ($scope,$timeout) { 	
-  	
-  	var rootRef = new Firebase('https://sizzling-fire-6312.firebaseio.com/');
-    var messagesRef = rootRef.child('message');
+  .controller('MainCtrl', function ($scope,$timeout, MessageService) { 	
 
-    // Calls when firebase is modified 
-    childRef.on('value', function(snapshot) {
-      // Prioritize the thread
+    $scope.currentUser = null;
+    $scope.currentText = null;
+    $scope.messages = [];
+
+
+    MessageService.childAdded(function(addedChild) {
       $timeout(function() {
-        snapshot.forEach(function(item) {
-          console.log(item.name() + ' - ' + item.val());
-          console.log(item.ref())
-        });
-        
-        $scope.message = snapshot.val();
+        $scope.messages.push(addedChild);
       });
-      
     });
 
+    $scope.sendMessage = function() {
+      var newMessage = {
+        user : $scope.currentUser,
+        text : $scope.currentText
+      };
+      // Save to firebase
+      MessageService.add(newMessage);
+    };
 
-
-    // $scope.$watch('message.text', function(newVal) {
-    //     if (!newVal) {
-    //       return;
-    //     }
-    //     childRef.update({
-    //       text : newVal
-    //     });
-    // });
-
-
-    //https://sizzling-fire-6312.firebaseio.com/message
-
-    // $scope.setMessage = function() {
-    //   childRef.set({
-    //     user : 'Bob',
-    //     text : 'Hi'
-    //   })
-
-    // };
-
-    // $scope.updateMessage = function() {
-    //   childRef.update({
-    //     text: 'Bye'
-    //   })
-    // };
-
-    // $scope.deleteMessage = function() {
-    //   childRef.remove();
-    // };
+    $scope.turnFeedOff = function() {
+      MessageService.off();
+    };
 
   });

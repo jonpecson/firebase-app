@@ -1,4 +1,4 @@
-'use strict';
+
 
 /**
  * @ngdoc overview
@@ -30,4 +30,5 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-  });
+  })
+  .constant('FBURL','https://sizzling-fire-6312.firebaseio.com/');
