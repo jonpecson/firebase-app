@@ -7,7 +7,7 @@
 
 		return {
 			childAdded: function childAdded(limitNumber, cb) {
-				messageRef.startat().limit(limitNumber).on('child_added', function(snapshot) {
+				messageRef.startAt(null,'-JRdFXg-x_cZaWjtntqs').limit(limitNumber).on('child_added', function(snapshot) {
 					var val = snapshot.val();
 					cb.call(this, {
 						user: val.user,
