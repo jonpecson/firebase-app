@@ -9,7 +9,7 @@
  * Controller of the firebaseApp
  */
 angular.module('firebaseApp')
-  .controller('MainCtrl', function ($scope,$timeout, MessageService) { 	
+  .controller('MainCtrl', function ($scope,$timeout, MessageService) {
 
     $scope.currentUser = null;
     $scope.currentText = null;
@@ -33,6 +33,20 @@ angular.module('firebaseApp')
 
     $scope.turnFeedOff = function() {
       MessageService.off();
+    };
+
+    $scope.pageNext = function() {
+      var lastItem = $scope.messages[$scope.messages.length -1];
+      MessageService.pageNext(lastItem.name, 10).then(function(messages) {
+        $scope.messages = messages;
+      });
+    };
+
+    $scope.pageBack = function() {
+      var firstItem = $scope.messages[0];
+      MessageService.pageBack(firstItem.name, 10).then(function(messages) {
+        $scope.messages = messages;
+      });
     };
 
   });
