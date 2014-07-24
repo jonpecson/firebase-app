@@ -38,7 +38,7 @@
 			promise.then(function(user) {
 				//success
 				console.log(user);
-				$window.location.href =  '#/home';
+				$window.location.href =  '#/home'; 
 
 			}, function(error) {
 				console.error(error);
