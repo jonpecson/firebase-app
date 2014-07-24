@@ -24,7 +24,9 @@ angular.module('firebaseApp')
     $scope.sendMessage = function() {
       var newMessage = {
         user : $scope.currentUser,
-        text : $scope.currentText
+        text : $scope.currentText,
+        email : $scope.user.email,
+        uid : $scope.user.uid
       };
       // Save to firebase
       var promise = MessageService.add(newMessage);

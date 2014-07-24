@@ -12,7 +12,7 @@
 					// console.log(data);
 					var val = data.snapshot.value;
 					cb.call(this, {
-						user: val.user,
+						email: val.email,
 						text: val.text,
 						name: data.snapshot.name
 					});

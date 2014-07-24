@@ -1,6 +1,6 @@
 <div class="jumbotron">
   <div ng-repeat="message in messages">
-  	{{ message.user }} - {{ message.text }}
+  	{{ message.email }} - {{ message.text }}
   </div>
 </div>
 
@@ -12,7 +12,6 @@
 
 <div class="row marketing">
 
-	<input type="text" class="form-control" ng-model="currentUser">
 
 	<div class="input-group">
 		<input type="text" class="form-control" ng-model="currentText">
