@@ -15,7 +15,8 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'firebase'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -27,8 +28,21 @@ angular
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
       })
+      .when('/chat', { 
+        templateUrl : 'views/chat.html',
+        controller: 'ChatCtrl'
+      })
+      .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl'
+      })
+      .when('/register', {
+        templateUrl: 'views/register.html',
+        controller: 'RegisterCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
   })
-  .constant('FBURL','https://sizzling-fire-6312.firebaseio.com/');
+  .constant('FBURL','https://sizzling-fire-6312.firebaseio.com/')
+  .constant('MSGURL','https://sizzling-fire-6312.firebaseio.com/messages');

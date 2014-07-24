@@ -2,42 +2,49 @@
 (function (angular) {
 	'use strict';
 
-	angular.module('firebaseApp').service('MessageService', function(FBURL,$q) {
-		var messageRef = new Firebase(FBURL).child('messages');
+	angular.module('firebaseApp').service('MessageService', function(MSGURL,$q, $firebase) {
+		var messageRef = new Firebase(MSGURL).startAt().limit(10);
+		var fireMessage = $firebase(messageRef);
 
 		return {
-			childAdded: function childAdded(limitNumber, cb) {
-				messageRef.startAt(null,'-JRdFXg-x_cZaWjtntqs').limit(limitNumber).on('child_added', function(snapshot) {
-					var val = snapshot.val();
+			childAdded: function childAdded(cb) {
+				fireMessage.$on('child_added', function(data) {
+					console.log(data);
+					var val = data.snapshot.value;
 					cb.call(this, {
 						user: val.user,
 						text: val.text,
-						name: snapshot.name()
+						name: data.snapshot.name
 					});
 				});
 			},
 
 			add: function addMessage(message) {
-				messageRef.push(message);
+				return fireMessage.$add(message);
 			},
 
 			off: function turnMessageOff() {
-				messageRef.off();
+				fireMessage.$off();
 			},
 
 			pageNext: function pageNext(name, numberOfItems) {
 				var deferred = $q.defer();
 				var messages = [];
 
-				messageRef.startAt(null, name).limit(numberOfItems).once('value', function(snapshot) {
-					snapshot.forEach(function(snapItem) {
-						var itemVal = snapItem.val();
-						itemVal.name = snapItem.name();
-						messages.push(itemVal);
-					});
-					deferred.resolve(messages);
+				var pageMessageRef = new Firebase(MSGURL).startAt(null, name).limit(numberOfItems);
 
+				$firebase(pageMessageRef).$on('loaded', function(data) {
+					var keys = Object.keys(data);
+
+					angular.forEach(keys, function(key) {
+						var item = data[key];
+						item.name = key;
+ 
+						messages.push(item);
+					});
+					 deferred.resolve(messages);
 				});
+
 
 				return deferred.promise;
 			},
@@ -46,21 +53,22 @@
 				var deferred = $q.defer();
 				var messages = [];
 
-				messageRef.endAt(null, name).limit(numberOfItems).once('value', function(snapshot) {
-					snapshot.forEach(function(snapItem) {
-						var itemVal = snapItem.val();
-						itemVal.name = snapItem.name();
-						messages.push(itemVal);
+				var pageMessageRef = new Firebase(MSGURL).endAt(null, name).limit(numberOfItems);
+
+				$firebase(pageMessageRef).$on('loaded', function(data) {
+					var keys = Object.keys(data);
+
+					angular.forEach(keys, function(key) {
+						var item = data[key]; 	
+						item.name = key;
+
+						messages.push(item);
 					});
+
 					deferred.resolve(messages);
-
 				});
-
-				return deferred.promise;
+			return deferred.promise;
 			}
-
-
-
 		};
 
 	});

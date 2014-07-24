@@ -1,4 +1,5 @@
 
+
 'use strict';
 
 /**
@@ -16,10 +17,8 @@ angular.module('firebaseApp')
     $scope.messages = [];
 
 
-    MessageService.childAdded(10, function(addedChild) {
-      $timeout(function() {
+    MessageService.childAdded(function(addedChild) {
         $scope.messages.push(addedChild);
-      });
     });
 
     $scope.sendMessage = function() {
@@ -28,7 +27,11 @@ angular.module('firebaseApp')
         text : $scope.currentText
       };
       // Save to firebase
-      MessageService.add(newMessage);
+      var promise = MessageService.add(newMessage);
+      promise.then(function(data) {
+        console.log(data.name());
+      });
+
     };
 
     $scope.turnFeedOff = function() {
