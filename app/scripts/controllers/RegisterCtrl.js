@@ -19,7 +19,7 @@
 
 			var errors = [],
 				user = $scope.registerUser;
-			if (user.email==='') {
+			if (user.email ==='') {
 				errors.push('Please enter an email');
 			}
 			if (user.password === '') {
@@ -38,7 +38,7 @@
 			promise.then(function(user) {
 				//success
 				console.log(user);
-				$window.location.href =  '#/home'; 
+				$window.location.href =  '#/main'; 
 
 			}, function(error) {
 				console.error(error);
