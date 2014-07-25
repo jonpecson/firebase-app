@@ -16,7 +16,9 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'firebase'
+    'firebase',
+    'routeSecurity',
+    'simpleLoginTools'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -30,7 +32,8 @@ angular
       })
       .when('/chat', { 
         templateUrl : 'views/chat.html',
-        controller: 'ChatCtrl'
+        controller: 'ChatCtrl',
+        authRequired: true
       })
       .when('/login', {
         templateUrl: 'views/login.html',
@@ -49,4 +52,5 @@ angular
       });
   })
   .constant('FBURL','https://sizzling-fire-6312.firebaseio.com/')
-  .constant('MSGURL','https://sizzling-fire-6312.firebaseio.com/messages');
+  .constant('MSGURL','https://sizzling-fire-6312.firebaseio.com/messages')
+  .constant('loginRedirectPath', '/login');
